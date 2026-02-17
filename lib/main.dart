@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/home/home_page.dart';
+import 'package:flutter_application_1/home/homePage.dart';
 
 
 void main() {
@@ -13,11 +13,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Мои Задачи',
+      title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: .fromSeed(seedColor: Colors.blue),
+        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'Мои Задачи'),
+      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }

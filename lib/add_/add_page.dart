@@ -1,102 +1,96 @@
-
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 
-class AddTodoPage extends StatefulWidget{
-  const AddTodoPage({super.key});
+class AddTodoPage extends StatefulWidget {
+  final String? initialText;
+
+  const AddTodoPage({super.key, this.initialText});
 
   @override
-  State<StatefulWidget> createState() => _AddTodoPage();
+  State<AddTodoPage> createState() => _AddTodoPageState();
 }
 
-class _AddTodoPage extends State<AddTodoPage> {
-  TextEditingController _textEditingController = TextEditingController();
-  late Timer _timer;
-  
+class _AddTodoPageState extends State<AddTodoPage> {
+
+  late TextEditingController _textEditingController;
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    print("AddTodoPage - initState");
-    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      final date = DateTime.now();
-      print("${date.minute}:${date.second}");
-    });
+
+    _textEditingController = TextEditingController(
+      text: widget.initialText ?? "",
+    );
   }
 
   @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-    print("AddTodoPage - didChangeDependecies");
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    print("AddTodoPage - build");
-     return Scaffold(
+
+    final bool isEditing = widget.initialText != null;
+
+    return Scaffold(
       body: SafeArea(
-        child: Padding(padding: const EdgeInsets.symmetric(horizontal: 18),
-        child: Column(
-          children: [
-            const SizedBox(height: 10),
-              const Text(
-                'Новая задача',
-                style: TextStyle(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 18),
+          child: Column(
+            children: [
+              const SizedBox(height: 10),
+
+              Text(
+                isEditing ? 'Редактировать задачу' : 'Новая задача',
+                style: const TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.w600,
                   color: Colors.black87,
                 ),
               ),
+
               const SizedBox(height: 10),
               Container(height: 1, color: Colors.black26),
               const SizedBox(height: 18),
 
-                    TextField(
-                      controller: _textEditingController,
-                        decoration: InputDecoration(
-            hintText: 'Введите текст',
-            filled: true,
-            fillColor: const Color(0xFFEDEDED), // серый фон
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 14,
-            ),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(
-                color: Colors.black,
-                width: 1.5,
+              TextField(
+                controller: _textEditingController,
+                decoration: InputDecoration(
+                  hintText: 'Введите текст',
+                  filled: true,
+                  fillColor: const Color(0xFFEDEDED),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 14,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
               ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(
-                color: Colors.black,
-                width: 1.5,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(
-                color: Colors.black,
-                width: 2,
-              ),
-            ),
-          ),
-          ),
-           const Spacer(),
-           SizedBox(
+
+              const Spacer(),
+
+              SizedBox(
                 width: double.infinity,
                 height: 60,
                 child: ElevatedButton.icon(
                   onPressed: () {
-                   () => ();
+                    final text = _textEditingController.text.trim();
+
+                    if (text.isEmpty) {
+                      Navigator.pop(context);
+                    } else {
+                      Navigator.pop(context, text);
+                    }
                   },
-                  label: const Text(
-                    'Сохранить',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                  icon: const Icon(Icons.add),
+                  label: Text(
+                    isEditing ? 'Сохранить изменения' : 'Сохранить',
+                    style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500),
                   ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF0A72FF),
@@ -104,39 +98,15 @@ class _AddTodoPage extends State<AddTodoPage> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
-                    elevation: 0,
                   ),
                 ),
               ),
-              const SizedBox(height: 16)
-          ],
+
+              const SizedBox(height: 16),
+            ],
+          ),
         ),
-        ),
-        ),
+      ),
     );
-  }
-
-  @override
-  void didUpdateWidget(covariant AddTodoPage oldWidget) {
-    // TODO: implement didUpdateWidget
-    super.didUpdateWidget(oldWidget);
-    print("AddTodoPage - didUpdateWidget");
-  }
-
-  @override
-  void deactivate() {
-    // TODO: implement deactivate
-    super.deactivate();
-    print("AddTodoPage - deactivate");
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    //Закрывать все фоновые задачи
-    print("AddTodoPage - dispose");
-    _timer.cancel();
-    _textEditingController.dispose();
   }
 }

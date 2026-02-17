@@ -1,13 +1,14 @@
 
-
 class Todo {
-  final int id;
-  final String title;
-  final String date;
-  final bool isDone;
- // ColorRgb color = ColorRgb(r: 245, b: 44, g: 100, alpha: 1);
+  int id;
+  String title;
+  String date;
+  bool isDone;
 
-  const Todo({required this.id, required this.title, required this.date, required this.isDone});
+  Todo({required this.id,
+    required this.title,
+    required this.date,
+    required this.isDone,});
 }
 
 class ColorRgb {

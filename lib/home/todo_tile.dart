@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class TodoTile extends StatelessWidget {
@@ -46,7 +45,6 @@ class TodoTile extends StatelessWidget {
               ),
             ),
           ),
-
           const SizedBox(width: 10),
           Row(
             mainAxisSize: MainAxisSize.min,
@@ -68,7 +66,6 @@ class TodoTile extends StatelessWidget {
     );
   }
 }
-
 
 class _SquareCheckbox extends StatelessWidget {
   final bool value;
