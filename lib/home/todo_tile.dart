@@ -2,93 +2,101 @@ import 'package:flutter/material.dart';
 
 class TodoTile extends StatelessWidget {
   final String title;
+  final String description;
   final String dateText;
-  final bool isDone;
-  final ValueChanged<bool> onChanged;
+  final VoidCallback onTap;
+  final VoidCallback onDelete;
 
   const TodoTile({
     super.key,
     required this.title,
+    required this.description,
     required this.dateText,
-    required this.isDone,
-    required this.onChanged,
+    required this.onTap,
+    required this.onDelete,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 74,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        color: const Color(0xFF0A72FF),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Row(
-        children: [
-          _SquareCheckbox(
-            value: isDone,
-            onChanged: onChanged,
-          ),
-          const SizedBox(width: 14),
+    return InkWell(
+      borderRadius: BorderRadius.circular(16),
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 241, 241, 241),
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 8,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
 
-          Expanded(
-            child: Text(
-              title,
-              maxLines: 1,
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+
+                PopupMenuButton<String>(
+                  tooltip: '',
+                  icon: const Icon(Icons.more_vert),
+                  onSelected: (value) {
+                    if (value == "delete") {
+                      onDelete();
+                    }
+                  },
+                  itemBuilder: (context) => const [
+                    PopupMenuItem(
+                      
+                      value: "delete",
+                      child: Text("Удалить"),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 6),
+
+            Text(
+              description,
+              maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: 18,
-                color: Colors.white,
-                decoration: isDone ? TextDecoration.lineThrough : null,
-                decorationColor: Colors.white,
-                decorationThickness: 2,
+              style: const TextStyle(
+                fontSize: 14,
+                color: Colors.black54,
               ),
             ),
-          ),
-          const SizedBox(width: 10),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(Icons.calendar_month, color: Colors.white, size: 18),
-              const SizedBox(width: 6),
-              Text(
-                dateText,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
+
+            const SizedBox(height: 10),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  dateText,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Colors.black45,
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _SquareCheckbox extends StatelessWidget {
-  final bool value;
-  final ValueChanged<bool> onChanged;
-
-  const _SquareCheckbox({required this.value, required this.onChanged});
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(6),
-      onTap: () => onChanged(!value),
-      child: Container(
-        width: 28,
-        height: 28,
-        decoration: BoxDecoration(
-          color: const Color(0xFFEDEDED),
-          borderRadius: BorderRadius.circular(6),
-          border: Border.all(color: Colors.black87, width: 2),
+              ],
+            ),
+          ],
         ),
-        child: value
-            ? const Icon(Icons.check, size: 20, color: Colors.black87)
-            : null,
       ),
     );
   }

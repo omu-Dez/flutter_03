@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/database/appDatabase.dart';
 import 'package:flutter_application_1/home/homePage.dart';
 
-
-void main() {
-  runApp(const MyApp());
+late final AppDatabase appDatabase;
+void main() async {
+WidgetsFlutterBinding.ensureInitialized();
+  appDatabase = AppDatabase();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -15,7 +18,6 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
